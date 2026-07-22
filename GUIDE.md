@@ -160,6 +160,63 @@ POST-MAIL-AUTOMATION/
 
 ---
 
+## Перенос на другой ПК
+
+### 1. Клонирование
+```bash
+git clone https://github.com/Yuri-Sverdlov/POST-MAIL-AUTOMATION.git
+cd POST-MAIL-AUTOMATION
+```
+
+### 2. Установка зависимостей
+```bash
+pip install -r app/requirements.txt
+```
+
+### 3. Настройка секретов (вручную, НЕ из git)
+Создайте `app/.env` из шаблона:
+```bash
+copy app\.env.example app\.env
+```
+Заполните реальными значениями:
+- `IMAP_USER` — ваш Gmail
+- `OPENROUTER_API_KEY` — ключ с https://openrouter.ai/keys
+
+Создайте `app/credentials.json`:
+- Скачайте OAuth2 client secret из Google Cloud Console
+  (Desktop application, scope: `https://mail.google.com/`)
+- Сохраните как `app/credentials.json`
+
+### 4. Авторизация Gmail
+```bash
+python -m app
+# Откроется браузер → подтвердить доступ.
+# Токен сохранится в app/token.ВАШ_EMAIL.pickle
+```
+
+### 5. Установка скиллов Hermes
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\AppData\Local\hermes\skills\email"
+Copy-Item -Recurse -Force "skills\mail-inbox" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-inbox"
+Copy-Item -Recurse -Force "skills\mail-translate" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-translate"
+Copy-Item -Recurse -Force "skills\mail-export" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-export"
+Copy-Item -Recurse -Force "skills\mail-aliexpress" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-aliexpress"
+```
+Или через Hermes CLI:
+```bash
+hermes skills install skills/mail-inbox
+```
+После установки: `/reload-skills` или перезапустите Hermes.
+
+### 6. Проверка
+```bash
+python -m app                    # показать входящие
+python -m app translate 20822    # перевести письмо
+python -m app export --limit 3   # экспорт 3 писем
+```
+
+---
+
 ## Стек
 
 | Компонент | Технология |
