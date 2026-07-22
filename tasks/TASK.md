@@ -1,55 +1,86 @@
-# TASK.md — 003: Git init, sanitize secrets, commit, push to GitHub
+# TASK.md — 008: Git commit and push all changes (tasks 004-007)
 
 ## Active task
-Initialize git, clean up sensitive data, make the first commit, and push to GitHub.
+Stage all source code changes, exclude test artifacts, commit, and push to GitHub.
 
 ## Context
-The project is ready for version control. Remote repo already exists: https://github.com/Yuri-Sverdlov/POST-MAIL-AUTOMATION. This task must ensure ZERO secrets leak into the public repo.
+Tasks 004-007 completed: translator, export, AliExpress tracker, multi-account OAuth2. Also: GUIDE.md, updated CONTEXT.md, PROJECT_LOG.md. Ready to push.
+
+## Files to commit (source code + docs)
+Modified (10):
+- `.gitignore`
+- `CONTEXT.md`
+- `PROJECT_LOG.md`
+- `app/.env.example`
+- `app/__main__.py`
+- `app/imap_client.py`
+- `app/oauth_auth.py`
+- `app/requirements.txt`
+- `tasks/REPORT.md`
+- `tasks/TASK.md`
+
+New (4):
+- `AGENTS.md`
+- `CLAUDE.md`
+- `GUIDE.md`
+- `app/aliexpress.py`
+- `app/config.py`
+- `app/translator.py`
+
+Wait — AGENTS.md and CLAUDE.md were in the initial commit. Let me recheck.
+
+Actually AGENTS.md and CLAUDE.md were committed in 095e336 (initial commit). The new files from tasks 004-007 are:
+- `GUIDE.md`
+- `app/aliexpress.py`
+- `app/config.py`
+- `app/translator.py`
+
+## Files to EXCLUDE (test artifacts, do NOT commit)
+- `aliexpress_orders.txt` — test output
+- `aliexpress_orders.xlsx` — test output
+- `samples_aliexpress.txt` — test output
 
 ## Steps
 
-### 1. Sanitize secrets BEFORE git init
-- Open `app/.env` and remove the `IMAP_PASSWORD=tpvc qfml ervf gegm` line. OAuth2 is now primary — this App Password line is dead code and a security risk.
-- Leave only:
-  ```
-  IMAP_HOST=imap.gmail.com
-  IMAP_USER=yurispp@gmail.com
-  ```
-- Verify: `git check-ignore -v app/.env` should show the ignore rule BEFORE any git add.
+### 1. Add test artifacts to .gitignore
+Append to `.gitignore`:
+```
+samples_*.txt
+aliexpress_orders.*
+```
 
-### 2. Git init and first commit
+### 2. Verify no secrets in staged files
 ```powershell
-git init
+git status
+# Confirm token.*.pickle, credentials.json, .env are NOT staged
+```
+
+### 3. Stage and commit
+```powershell
 git add .
-git status  # verify app/.env, credentials.json, token.pickle are NOT staged
-git commit -m "Initial commit: IMAP client with OAuth2 for Gmail"
+git status  # verify only intended files are staged
+git commit -m "Tasks 004-007: translation, export, AliExpress tracker, multi-account OAuth2"
 ```
 
-### 3. Set remote and push
+### 4. Push
 ```powershell
-git remote add origin https://github.com/Yuri-Sverdlov/POST-MAIL-AUTOMATION.git
-git branch -M main
-git push -u origin main
+git push origin main
 ```
 
-### 4. Verify push
+### 5. Verify
 ```powershell
+git log --oneline -3
 git ls-remote origin refs/heads/main
 git rev-parse HEAD
 ```
-Both should return the same commit hash.
-
-### 5. Verify no secrets leaked
-- Open https://github.com/Yuri-Sverdlov/POST-MAIL-AUTOMATION in browser.
-- Confirm `app/.env`, `app/credentials.json`, `app/token.pickle` are NOT in the file list.
+All three should show the same commit hash.
 
 ## Validation checklist
-- [ ] `app/.env` no longer contains `IMAP_PASSWORD`
-- [ ] `git status` does NOT show `app/.env`, `credentials.json`, `token.pickle` as staged
-- [ ] `git push` succeeds (HTTPS, Windows Credential Manager or PAT)
-- [ ] `git ls-remote` commit matches local HEAD
-- [ ] GitHub repo shows all source files but NO secrets
+- [ ] `samples_*.txt`, `aliexpress_orders.*` excluded from commit
+- [ ] No secrets in commit (token files, credentials, .env)
+- [ ] Push succeeds, remote = local HEAD
+- [ ] GitHub shows all source files, no test artifacts
 
-## Security notes
-- The App Password was `tpvc qfml ervf gegm`. Even though `.gitignore` blocks `.env`, remove the line to be safe. Revoke this App Password at https://myaccount.google.com/apppasswords after push.
-- `token.pickle` is excluded by `.gitignore` — verified locally.
+## Notes
+- CRLF warnings in diff are harmless (Windows line endings) — ignore.
+- Commit message should mention tasks 004-007 for traceability.

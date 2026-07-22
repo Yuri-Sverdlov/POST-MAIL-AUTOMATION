@@ -1,12 +1,11 @@
 # REPORT.md
 
 ## Status
-Task 003 — awaiting coder.
+Task 008 — awaiting coder (git commit + push).
 
 ## Previous tasks
-- 001 & 002 — completed and verified (IMAP + OAuth2).
-- Archiving 001 & 002 to tasks/done/ — deferred to Task 003.
+- 001–007 accepted.
 
 ## Notes
-- Git repo does not exist yet. Coder must init and push.
-- `.env` still contains old App Password — must be cleaned.
+- 10 modified + 4 new source files to commit.
+- 3 test artifacts to exclude (samples_*.txt, aliexpress_orders.*).
