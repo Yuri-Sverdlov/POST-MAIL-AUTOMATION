@@ -1,0 +1,41 @@
+
+## Результаты поиска
+
+### 🔥 Скиллы для Claude Code и Hermes
+
+| Репозиторий | Звёзды | Что внутри |
+|---|---|---|
+| **[obra/superpowers](https://github.com/obra/superpowers)** | **259 тыс** ⭐ | Агентный фреймворк скиллов. **Тот самый** легендарный репо! |
+| **[alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills)** | **23 тыс** ⭐ | **345 скиллов** + 30+ агентов + 70+ команд. Для Claude Code, Codex, Gemini CLI, Cursor, Hermes |
+| **[jnMetaCode/superpowers-zh](https://github.com/jnMetaCode/superpowers-zh)** | 7.1 тыс ⭐ | Китайский перевод superpowers + 6 оригинальных скиллов. Работает с Hermes! |
+| **[ChrisWiles/claude-code-showcase](https://github.com/ChrisWiles/claude-code-showcase)** | 6 тыс ⭐ | Комплексный конфиг Claude Code: хуки, скиллы, агенты |
+| **[zebbern/claude-code-guide](https://github.com/zebbern/claude-code-guide)** | 4.4 тыс ⭐ | Гайд по Claude Code: workflows, agents, skills |
+| **[obra/superpowers-marketplace](https://github.com/obra/superpowers-marketplace)** | 1.2 тыс ⭐ | Маркетплейс плагинов Claude Code |
+| **[obra/superpowers-skills](https://github.com/obra/superpowers-skills)** | 731 ⭐ | Community-редактируемые скиллы |
+| **[rdone4425/skill](https://github.com/rdone4425/skill)** | 5 ⭐ | 🎯 **Skill Hub** — 77+ скиллов из 23 источников (включая Hermes!) |
+
+### 📧 Почта (+ GitHub звёзды)
+
+| Репозиторий | Звёзды | Что внутри |
+|---|---|---|
+| **[ikvk/imap_tools](https://github.com/ikvk/imap_tools)** | 832 ⭐ | Python-библиотека для IMAP — самая зрелая |
+| **[eric8810/open-mail-cli](https://github.com/eric8810/open-mail-cli)** | 12 ⭐ | Локальная email-инфраструктура для AI-агентов |
+| **[chandshy/mailpouch](https://github.com/chandshy/mailpouch)** | 8 ⭐ | MCP-сервер для Proton Mail — 69 инструментов |
+| **[yannicksong0106/qq-email-skill](https://github.com/yannicksong0106/qq-email-skill)** | 1 ⭐ | Email-скилл для AI-агентов (IMAP/SMTP) |
+
+### 🧠 Hermes-специфичное
+
+| Репозиторий | Звёзды |
+|---|---|
+| **[outsourc-e/hermes-workspace](https://github.com/outsourc-e/hermes-workspace)** | 6.2 тыс ⭐ |
+| **[farion1231/cc-switch](https://github.com/farion1231/cc-switch)** | 120 тыс ⭐ — all-in-one assistant для Claude Code, Codex, Hermes |
+
+---
+
+### 🎯 Что брать прямо сейчас
+
+1. **Для Claude Code (архитектор):** скиллы из `alirezarezvani/claude-skills` (345 шт!) и `obra/superpowers`
+2. **Для Hermes (кодер):** `obra/superpowers` + `rdone4425/skill` (77+ скиллов специально для Hermes)
+3. **Для почты:** самая зрелая библиотека — `ikvk/imap_tools` (832⭐), можно заменить ей текущий велосипед в `ymail.py`
+
+Сайт из прошлого чата — скорее всего это **superpowers.market** или страница `rdone4425/skill` (Skill Hub). Хочешь установить какой-то из этих репозиториев?

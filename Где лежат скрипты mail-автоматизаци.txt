@@ -1,0 +1,49 @@
+Где лежат скрипты mail-автоматизации
+Code
+C:\Users\Yuri\.config\himalaya\
+Файлы внутри:
+
+Файл	Назначение
+ymail.py	Главный CLI-скрипт (папки, список, чтение, поиск)
+.yandex_access_token	OAuth access token (живёт ~1 час)
+.yandex_refresh_token	OAuth refresh token (долговечен)
+callback_server.py	Сервер для перехвата OAuth code
+exchange_tokens.py	Обмен code на токены
+yandex_oauth.py	Полный OAuth-флоу Яндекса
+config.toml	Конфиг himalaya (справочно, не используется)
+TASK-PC1-MAIL-AUTOMATION.md	Инструкция для агента на ПК#1
+Запуск:
+
+Code
+· bash
+python C:\Users\Yuri\.config\himalaya\ymail.py list --limit 5
+📚 Где лежат скиллы
+Code
+C:\Users\Yuri\AppData\Local\hermes\skills\
+Созданный скилл:
+
+Code
+email\yandex-mail-oauth\SKILL.md
+Полный путь:
+
+Code
+C:\Users\Yuri\AppData\Local\hermes\skills\email\yandex-mail-oauth\SKILL.md
+Использование в Hermes:
+
+Code
+skill_view(name='yandex-mail-oauth')
+Структура скиллов по категориям:
+
+Code
+~/.local/bin/hermes/skills/
+├── email/
+│   ├── himalaya/              # Старый скилл (himalaya без OAuth2)
+│   └── yandex-mail-oauth/     # Новый скилл (OAuth2/XOAUTH2)
+├── github/
+├── mlops/
+└── ... другие категории
+Для ПК#1 нужно передать:
+
+Всю папку C:\Users\Yuri\.config\himalaya\ (скрипты + токены)
+Скилл email/yandex-mail-oauth/ (можно скопировать через hermes skills install)
+Файл TASK-PC1-MAIL-AUTOMATION.md как инструкцию`
