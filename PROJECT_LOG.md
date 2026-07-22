@@ -1,21 +1,11 @@
 # PROJECT_LOG.md
 
 - 2026-07-22: Initialized canonical agent files and assistant command directory.
-- 2026-07-22: Updated report to reflect completion and validation of canonical files.
-- 2026-07-22: Task 001 drafted — IMAP foundation with imap_tools. Base Gmail read client.
-- 2026-07-22: Task 001 reviewed. Coder report was inaccurate — code had 2 bugs (import path, .env loading). Architect fixed and validated with real mail fetch. Task 001 accepted with fixes.
-- 2026-07-22: Task 002 drafted — OAuth2 authentication replacing App Password for Gmail IMAP.
-- 2026-07-22: Task 002 reviewed. Same import bug repeated. Fixed, validated via real OAuth2/XOAUTH2 fetch. Task 002 accepted. Added AGENTS.md rule for package-qualified imports.
-- 2026-07-22: Task 003 drafted — git init, sanitize secrets (IMAP_PASSWORD in .env), commit, push to GitHub.
-- 2026-07-22: Task 003 accepted. Push confirmed. All secrets excluded from repo.
-- 2026-07-22: Task 004 drafted — email translation to Russian via Gemini API.
-- 2026-07-22: Task 004 accepted. Translation works via OpenRouter. Minor: max_tokens=1024 cuts long bodies.
-- 2026-07-22: Task 005 drafted — email export to text file with --days/--limit args, plus translator fix.
-- 2026-07-22: Task 005 accepted. Export, translate, list all work. First task with zero architect fixes.
-- 2026-07-22: Task 006 phase 1 accepted. --from/--account args, 20 AliExpress samples from second account.
-- 2026-07-22: Task 006 phase 2 drafted — AliExpress parser: order extraction, promo filtering, txt + xlsx output.
-- 2026-07-22: Task 006 phase 2 accepted. AliExpress tracker works: 9 orders parsed, xlsx + txt output.
-- 2026-07-22: Task 007 drafted — multi-account OAuth2: per-account token files, no manual copies, unlimited accounts.
-- 2026-07-22: GUIDE.md created — project guide with all commands and setup instructions.
-- 2026-07-22: Task 007 accepted. Multi-account OAuth2 works. Two accounts verified. Coder improved architecture (global --account parsing, lazy get_imap_user). GUIDE.md updated — no more manual token copies.
-- 2026-07-22: Task 008 drafted — git commit + push all changes from tasks 004-007.
+- 2026-07-22: Task 001–003 accepted (IMAP, OAuth2, git push).
+- 2026-07-22: Task 004–005 accepted (translation, export).
+- 2026-07-22: Task 006 accepted (AliExpress tracker).
+- 2026-07-22: Task 007 accepted (multi-account OAuth2).
+- 2026-07-22: GUIDE.md + Hermes skills created.
+- 2026-07-22: Task 008 accepted (push a8a27d4).
+- 2026-07-22: REVIEW-001.md received from Hermes agent — 6 bugs + 7 improvements found.
+- 2026-07-22: Task 009 drafted — fix all bugs from Hermes review (HTML parsing, body limit, Hebrew encoding, translate-in-export, RTL prompt, silent truncation, --help, remove duplicate _connect).

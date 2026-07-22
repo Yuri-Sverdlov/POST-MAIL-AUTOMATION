@@ -1,11 +1,11 @@
 # REPORT.md
 
 ## Status
-Task 008 — awaiting coder (git commit + push).
+Task 009 — awaiting coder (fix 6 bugs + 2 improvements from Hermes review).
 
-## Previous tasks
-- 001–007 accepted.
+## Source
+`tasks/REVIEW-001.md` — Hermes agent test report.
 
-## Notes
-- 10 modified + 4 new source files to commit.
-- 3 test artifacts to exclude (samples_*.txt, aliexpress_orders.*).
+## Summary of changes
+- 6 bugs: HTML parsing, body truncation, Hebrew encoding, translate-in-export, RTL prompt, silent truncation.
+- 2 system: --help mode, duplicate _connect() removal.
