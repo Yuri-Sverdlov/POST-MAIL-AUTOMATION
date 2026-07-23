@@ -1,4 +1,4 @@
-# Skills for Hermes Agent
+﻿# Skills for Hermes Agent
 
 These skills teach Hermes how to use the POST-MAIL-AUTOMATION project.
 
@@ -33,12 +33,18 @@ Run `/reload-skills` in Hermes or restart Hermes.
 
 ## Skill list
 
-| Skill | Command | Description |
-|---|---|---|
-| `mail-inbox` | `python -m app` | Show 5 recent inbox messages |
-| `mail-translate` | `python -m app translate <UID>` | Translate email to Russian |
-| `mail-export` | `python -m app export [options]` | Export emails to text file |
-| `mail-aliexpress` | `python -m app aliexpress [options]` | Track AliExpress orders |
+| Skill | Version | Command | Description |
+|---|---|---|---|
+| `mail-inbox` | 1.1.0 | `python -m app` | Show 5 recent inbox messages |
+| `mail-translate` | 1.1.0 | `python -m app translate <UID>` | Translate email to Russian (EN/HE) |
+| `mail-export` | 1.2.0 | `python -m app export [options]` | Export emails with date range, sender, translation filters |
+| `mail-aliexpress` | 1.1.0 | `python -m app aliexpress [options]` | Track AliExpress orders |
+
+### New in mail-export 1.2.0
+- `--from-date` / `--to-date` — filter by date range
+- `--before` / `--after` — filter relative to a date
+- `--translate` — auto-translate to Russian
+- `--skip-newsletters` — exclude promotional emails
 
 ## Requirements
 

@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta, timezone
-from imap_tools import MailBox, A
+from imap_tools import A
+from app.imap_client import connect
 
 ORDER_RE = re.compile(r"(?:Заказ(?:ать)?|Order)\s+(\d{16})", re.IGNORECASE)
 TRACKING_RE = re.compile(r"Package\s+(AE\d+)", re.IGNORECASE)
@@ -17,14 +18,6 @@ STATUS_MAP = {
 
 SENDER_TRANSACTIONAL = "transaction@notice.aliexpress.com"
 ALIEXPRESS_DOMAINS = ("aliexpress.com", "aliexpress.ru", "aliexpress.co.il")
-
-
-def _connect():
-    from app.oauth_auth import get_access_token
-    from app.config import IMAP_HOST, get_imap_user
-    user = get_imap_user()
-    token = get_access_token(user)
-    return MailBox(IMAP_HOST).xoauth2(user, token)
 
 
 def _is_aliexpress(from_addr: str) -> bool:
@@ -78,7 +71,7 @@ def _classify_email(msg) -> dict | None:
 
 def fetch_aliexpress_emails(days: int = 90, limit: int = 100):
     since = (datetime.now(timezone.utc) - timedelta(days=days)).date()
-    with _connect() as mailbox:
+    with connect() as mailbox:
         raw_msgs = list(mailbox.fetch(A(date_gte=since), limit=limit, reverse=True))
         results = []
         for msg in raw_msgs:

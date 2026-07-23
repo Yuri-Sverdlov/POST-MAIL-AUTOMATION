@@ -65,18 +65,28 @@ python -m app translate 20822
 | `--limit N` | 20 | Максимум N писем |
 | `--output file.txt` | exported_emails.txt | Имя выходного файла |
 | `--from ADDR` | нет | Фильтр по отправителю |
+| `--from-date YYYY-MM-DD` | нет | Начиная с даты (включительно) |
+| `--to-date YYYY-MM-DD` | нет | До даты (включительно) |
+| `--before YYYY-MM-DD` | нет | Строго раньше даты |
+| `--after YYYY-MM-DD` | нет | Строго позже даты |
+| `--translate` | нет | Автоперевод тел писем на русский |
+| `--skip-newsletters` | нет | Пропустить рассылки (спам, промо) |
 | `--account EMAIL` | из .env | Переключить Gmail-аккаунт |
 
 Примеры:
 ```bash
-python -m app export                                          # последние 7 дней
-python -m app export --days 30 --limit 50                     # месяц, до 50 писем
-python -m app export --from "@aliexpress" --days 90            # только AliExpress
-python -m app export --account sverdlovy@gmail.com --limit 10  # другой аккаунт
+python -m app export                                              # последние 7 дней
+python -m app export --days 30 --limit 50                         # месяц, до 50 писем
+python -m app export --from "@aliexpress" --days 90               # только AliExpress
+python -m app export --account sverdlovy@gmail.com --limit 10     # другой аккаунт
+python -m app export --from-date 2026-07-01 --to-date 2026-07-31 # конкретный месяц
+python -m app export --before 2026-07-10 --limit 5               # 5 писем до даты
+python -m app export --days 7 --translate --skip-newsletters       # перевод без спама
 ```
 
 Файл содержит для каждого письма: UID, дату, время (UTC), отправителя, тему,
-наличие вложений, первые 300 символов тела.
+наличие вложений, первые 2000 символов тела. Если тело обрезано —
+добавляется `... [truncated]`.
 
 ### `python -m app aliexpress [опции]`
 Отслеживание заказов AliExpress: парсит транзакционные письма,
@@ -138,24 +148,26 @@ python -m app export --account third@example.com # третий
 ```
 POST-MAIL-AUTOMATION/
 ├── app/
-│   ├── __init__.py          # пакет
-│   ├── __main__.py          # точка входа, парсинг команд
-│   ├── config.py            # загрузка .env
-│   ├── oauth_auth.py        # OAuth2-авторизация Gmail
-│   ├── imap_client.py       # IMAP: список, чтение, экспорт писем
-│   ├── translator.py        # перевод через OpenRouter LLM
-│   ├── aliexpress.py        # парсер заказов AliExpress
-│   ├── .env                 # ключи и настройки (НЕ коммитить!)
-│   ├── .env.example         # шаблон настроек
-│   ├── credentials.json     # Google OAuth2 (НЕ коммитить!)
-│   └── token.pickle         # OAuth2-токен (НЕ коммитить!)
+│   ├── __init__.py              # пакет
+│   ├── __main__.py              # точка входа, парсинг команд
+│   ├── config.py                # загрузка .env
+│   ├── oauth_auth.py            # OAuth2-авторизация Gmail
+│   ├── imap_client.py           # IMAP: список, чтение, экспорт, strip_html, даты
+│   ├── translator.py            # перевод через OpenRouter LLM (RTL, truncation)
+│   ├── aliexpress.py            # парсер заказов AliExpress
+│   ├── .env                     # ключи и настройки (НЕ коммитить!)
+│   ├── .env.example             # шаблон настроек
+│   ├── credentials.json         # Google OAuth2 (НЕ коммитить!)
+│   └── token.pickle             # OAuth2-токен (НЕ коммитить!)
 ├── tasks/
-│   ├── TASK.md              # активное задание кодеру
-│   └── REPORT.md            # отчёт о выполнении
-├── AGENTS.md                # правила для терминального агента
-├── CONTEXT.md               # память проекта (стек, фокус)
-├── GUIDE.md                 # этот файл
-└── PROJECT_LOG.md           # журнал всех сессий
+│   ├── TASK.md                  # активное задание кодеру
+│   ├── REPORT.md                # отчёт о выполнении
+│   └── done/                    # архив принятых заданий
+├── skills/                      # скиллы для Hermes-агента
+├── AGENTS.md                    # правила для терминального агента
+├── CONTEXT.md                   # память проекта (стек, фокус)
+├── GUIDE.md                     # этот файл
+└── PROJECT_LOG.md               # журнал всех сессий (append-only)
 ```
 
 ---
@@ -194,19 +206,12 @@ python -m app
 # Токен сохранится в app/token.ВАШ_EMAIL.pickle
 ```
 
-### 5. Установка скиллов Hermes
+### 5. Скиллы для терминального агента (опционально)
+Скиллы лежат в папке `skills/`. Для Claude Code / Hermes:
 ```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\AppData\Local\hermes\skills\email"
-Copy-Item -Recurse -Force "skills\mail-inbox" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-inbox"
-Copy-Item -Recurse -Force "skills\mail-translate" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-translate"
-Copy-Item -Recurse -Force "skills\mail-export" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-export"
-Copy-Item -Recurse -Force "skills\mail-aliexpress" "$env:USERPROFILE\AppData\Local\hermes\skills\email\mail-aliexpress"
+Copy-Item -Recurse -Force "skills\*" "$env:USERPROFILE\.agents\skills\"
 ```
-Или через Hermes CLI:
-```bash
-hermes skills install skills/mail-inbox
-```
-После установки: `/reload-skills` или перезапустите Hermes.
+После копирования: перезапустите агента.
 
 ### 6. Проверка
 ```bash
@@ -238,14 +243,18 @@ python -m app export --limit 3   # экспорт 3 писем
 
 ---
 
-## Hermes (терминальный агент)
+## Терминальный агент (Claude Code / Hermes)
 
-Проект спроектирован для работы с Hermes-агентом.
-Команда для запуска кодера:
+Проект спроектирован для работы с терминальным агентом по двухагентной схеме
+(архитектор в чате ↔ кодер в терминале).
+
+Стартовая команда для кодера (копируется из начала `tasks/TASK.md`):
 ```
-Прочитай CONTEXT.md, затем AGENTS.md, затем tasks/TASK.md и выполни задание.
+Прочитай CONTEXT.md, затем AGENTS.md, затем tasks/TASK.md и выполни задание *TASK-NNN*.
 ```
-Готовые команды для пользователя Hermes:
+где `NNN` — номер активного задания.
+
+Готовые команды для пользователя:
 ```
 python -m app                                        # список писем
 python -m app export --days 7 --limit 5              # экспорт за неделю

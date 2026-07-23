@@ -1,7 +1,7 @@
----
+﻿---
 name: mail-aliexpress
 description: Use when the user wants to track AliExpress orders. Parses transactional emails, filters out promotions, outputs chronological txt report and Excel table.
-version: 1.0.0
+version: 1.1.0
 author: POST-MAIL-AUTOMATION project
 platforms: [windows]
 metadata:
@@ -14,6 +14,13 @@ metadata:
 
 Track AliExpress orders from Gmail.
 
+## Project location
+
+- **PC1:** `G:\_My_Programming\POST-MAIL-AUTOMATION`
+- **PC2:** `G:\AI\_MY_PROGRAMMING\POST-MAIL-AUTOMATION`
+
+All commands run from the project root.
+
 ## When to Use
 
 - User asks about AliExpress orders, tracking, delivery status.
@@ -21,14 +28,30 @@ Track AliExpress orders from Gmail.
 
 ## Procedure
 
-1. Change to the project root directory (where `app/` lives).
-2. Run from the project root:
+1. `cd` to the project root (see paths above).
+2. Run:
 
 ```
-python -m app aliexpress --account sverdlovy@gmail.com --days 90 --limit 100
+python -m app aliexpress [options]
 ```
 
-Note: `--account` must be the Gmail that receives AliExpress emails.
+## Options
+
+| Option | Default | Description |
+|---|---|---|
+| `--days N` | 365 | Last N days |
+| `--limit N` | 200 | Max emails to scan |
+| `--account EMAIL` | from .env | Gmail account that receives AliExpress emails |
+
+## Examples
+
+```bash
+# Default: last 365 days, max 200
+python -m app aliexpress
+
+# Last 90 days, max 100, specific account
+python -m app aliexpress --account <your-email> --days 90 --limit 100
+```
 
 ## Output Files
 
@@ -40,6 +63,7 @@ Note: `--account` must be the Gmail that receives AliExpress emails.
 - Only transactional emails from `transaction@notice.aliexpress.com` are included.
 - Promotional emails (promo, discounts, recommendations) are automatically filtered out.
 - Requires `openpyxl` installed (`pip install openpyxl`).
+- The account must be the one that receives AliExpress order emails.
 
 ## Verification
 

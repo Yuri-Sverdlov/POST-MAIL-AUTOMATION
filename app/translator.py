@@ -4,6 +4,7 @@ from app.config import OPENROUTER_API_KEY, LLM_MODEL
 
 TRANSLATION_PROMPT = (
     "Translate the following email to Russian. "
+    "If the source is Hebrew or Arabic, handle RTL direction correctly in the translation. "
     "Preserve formatting. Keep names and technical terms in original. "
     "Output ONLY the translation, no explanations:\n\n"
 )
@@ -38,5 +39,10 @@ def translate_subject(subject: str) -> str:
     return _call_llm(subject)
 
 
+MAX_BODY = 8000
+
+
 def translate_body(body: str) -> str:
-    return _call_llm(body[:5000])
+    if len(body) > MAX_BODY:
+        print(f"Warning: body truncated from {len(body)} to {MAX_BODY} chars")
+    return _call_llm(body[:MAX_BODY])
