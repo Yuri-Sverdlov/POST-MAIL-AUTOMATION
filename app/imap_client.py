@@ -32,6 +32,16 @@ def strip_html(text: str) -> str:
     text = text.replace('&zwsp;', '')
     text = re.sub(r'&#820[2-5];', '', text)
 
+    # Strip raw Unicode zero-width / control chars (post-entity cleanup).
+    # Covers: U+2000..U+200A (En Quad, Figure Space, Hair Space, ...),
+    #         U+200B..U+200F (ZWSP, ZWNJ, ZWJ, LRM, RLM),
+    #         U+2028..U+202F (line/paragraph/word-joiner separators),
+    #         U+034F (Combining Grapheme Joiner),
+    #         U+2800 (Braille Pattern Blank — looks like space, is a char),
+    #         U+FEFF (BOM).
+    ZERO_WIDTH_RE = re.compile(r'[\u2000-\u200f\u2028-\u202f\u034f\u2800\ufeff]')
+    text = ZERO_WIDTH_RE.sub('', text)
+
     # Strip each line; preserve single blank line between paragraphs
     raw_lines = text.split('\n')
     lines = []
@@ -52,12 +62,17 @@ def strip_html(text: str) -> str:
     if re.match(r'^\d{1,3}$', lines[0]):
         lines = lines[1:]
 
-    # Deduplicate consecutive identical lines — keep one
+    # Deduplicate consecutive identical lines — keep one.
+    # Compare on "visible" content (after stripping zero-width chars), so that
+    # lines like "X" and "X\u2800" are treated as duplicates.
+    def _visible(s: str) -> str:
+        return ZERO_WIDTH_RE.sub('', s)
+
     deduped = []
     for line in lines:
         if line == '':
             deduped.append(line)
-        elif deduped and deduped[-1] == line:
+        elif deduped and _visible(deduped[-1]) != '' and _visible(deduped[-1]) == _visible(line):
             continue
         else:
             deduped.append(line)
